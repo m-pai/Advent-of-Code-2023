@@ -4,12 +4,12 @@ using namespace std;
 //----------------------------------------Problem Description----------------------------------------------
 // take n lines of input
 // input line format: Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-// find min num of cubes of each color to make that possible
-// power is the product of those numbers for each color
-// sum up the powers of all games, return the ans
+// find which games are possible with the bag having:
+// only 12 red cubes, 13 green cubes, and 14 blue cubes
+// sum up the IDs of those games, return the ans
 //----------------------------------------------------------------------------------------------------------
 
-void processSet(string setString, map<string,int> &maxNumOfCubes){
+bool isValidSet(string setString){
     int num;
     string color;
     stringstream ss(setString);
@@ -18,26 +18,27 @@ void processSet(string setString, map<string,int> &maxNumOfCubes){
     while(getline(ss, str, ',')){
         stringstream ss_(str);
         ss_ >> num >> color;
-        if(num > maxNumOfCubes[color]) maxNumOfCubes[color] = num;
+        if(color == "red" && num > 12) return false;
+        if(color == "blue" && num > 14) return false;
+        if(color == "green" && num > 13) return false;
     }
-    return;
+    return true;
 }
 
-int powerOfCubes(string line){
+void processLine(int &result, string line){
     string temp; string setString;
     int gameID = 0;
     char ch;
-    map<string,int> maxNumOfCubes = {{"red",0}, {"blue",0}, {"green",0}};
     stringstream ss(line);
-
     ss >> temp >> gameID >> ch;
+
     while(getline(ss, setString, ';')){
         // process the set
-        processSet(setString, maxNumOfCubes);
+        if(!isValidSet(setString)) return;
     }
     
-    int power = maxNumOfCubes["red"] * maxNumOfCubes["blue"] * maxNumOfCubes["green"];
-    return power;
+    result += gameID;
+    return;
 }
 
 int main(){    
@@ -47,7 +48,7 @@ int main(){
     while(getline(cin, line)){
         if(line.empty()) break;
         // process the line
-        result += powerOfCubes(line);
+        processLine(result, line);
     }
 
     cout << "The answer is: " << result << endl;
