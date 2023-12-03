@@ -24,7 +24,7 @@ def strung(k):
     if len(new) != 0: return 10 * new[0]+ new[-1] 
 
 sum = 0
-with open("input-01-12.txt") as file:
+with open("python_pip/input-01-12.txt") as file:
     for line in file:
         sum += strung(line.rstrip())
 

@@ -11,7 +11,7 @@ def strtonum(a):
     return int(c)
 
 sum = 0
-with open("input-01-12.txt") as file:
+with open("python_pip/input-01-12.txt") as file:
     for line in file:
         sum = sum + (strtonum(strnum(line.rstrip())))
 
